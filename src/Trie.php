@@ -40,7 +40,7 @@ class Trie implements Lexicon
     }
 
 
-    protected function getNode($prefix) : stdClass
+    protected function getNode(string $prefix) : stdClass
     {
         $this->reset();
         $letters = preg_split('//u', $prefix, -1, PREG_SPLIT_NO_EMPTY);
