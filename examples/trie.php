@@ -13,7 +13,8 @@ $trie->addWord('kołek');
 $trie->addWord('kot');
 $trie->addWord('kotowaty');
 
-var_dump(
-    $trie->isWord('kot'),
-    $trie->isWord('kołczan')
-);
+$wordsToSearch = ['kot', 'kołczan'];
+
+foreach($wordsToSearch as $word) {
+    echo "{$word} is " . ($trie->isWord($word) ? "a valid word" : "an invalid word") . "\n";
+}
