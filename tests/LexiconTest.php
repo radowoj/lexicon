@@ -7,24 +7,42 @@ use Radowoj\Lexicon\Trie;
 
 class TrieTest extends TestCase
 {
-    public function testAddedWordIsFound()
+    public function providerClassesToTest()
     {
-        $trie = new Trie();
+        return [
+            ['Radowoj\Lexicon\Trie'],
+            ['Radowoj\Lexicon\TrieArray']
+        ];
+    }
+
+
+    /**
+     * @dataProvider providerClassesToTest
+     */
+    public function testAddedWordIsFound($class)
+    {
+        $trie = new $class();
         $trie->addWord('someWord');
         $this->assertTrue($trie->isWord('someWord'));
     }
 
 
-    public function testNotAddedWordIsNotFound()
+    /**
+     * @dataProvider providerClassesToTest
+     */
+    public function testNotAddedWordIsNotFound($class)
     {
-        $trie = new Trie();
+        $trie = new $class();
         $this->assertFalse($trie->isWord('someWord'));
     }
 
 
-    public function testUtf8()
+    /**
+     * @dataProvider providerClassesToTest
+     */
+    public function testUtf8($class)
     {
-        $trie = new Trie();
+        $trie = new $class();
         $trie->addWord('czyłgana');
         $trie->addWord('ałmakuk');
         $trie->addWord('partędź');
@@ -37,17 +55,23 @@ class TrieTest extends TestCase
     }
 
 
-    public function testIncompleteWordIsNotTreatedAsWord()
+    /**
+     * @dataProvider providerClassesToTest
+     */
+    public function testIncompleteWordIsNotTreatedAsWord($class)
     {
-        $trie = new Trie();
+        $trie = new $class();
         $trie->addWord('cats');
         $this->assertFalse($trie->isWord('cat'));
     }
 
 
-    public function testWordsWithCommonPrefixAreFound()
+    /**
+     * @dataProvider providerClassesToTest
+     */
+    public function testWordsWithCommonPrefixAreFound($class)
     {
-        $trie = new Trie();
+        $trie = new $class();
         $trie->addWord('cat');
         $trie->addWord('cats');
         $this->assertTrue($trie->isWord('cat'));
@@ -55,9 +79,12 @@ class TrieTest extends TestCase
     }
 
 
-    public function testGetWordsByPrefix()
+    /**
+     * @dataProvider providerClassesToTest
+     */
+    public function testGetWordsByPrefix($class)
     {
-        $trie = new Trie();
+        $trie = new $class();
         $trie->addWord('catnip');
         $trie->addword('dogma');
         $trie->addWord('cat');
@@ -66,8 +93,5 @@ class TrieTest extends TestCase
         $this->assertSame(['cat', 'catnip', 'dog', 'dogma'], $trie->getWordsByPrefix());
         $this->assertSame(['cat', 'catnip'], $trie->getWordsByPrefix('cat'));
     }
-
-
-
 
 }
