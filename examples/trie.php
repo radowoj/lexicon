@@ -18,3 +18,8 @@ $wordsToSearch = ['kot', 'kołczan'];
 foreach($wordsToSearch as $word) {
     echo "{$word} is " . ($trie->isWord($word) ? "a valid word" : "an invalid word") . "\n";
 }
+
+var_dump(
+    $trie->getWordsByPrefix(),
+    $trie->getWordsByPrefix('kot')
+);

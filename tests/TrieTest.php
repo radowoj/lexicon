@@ -55,5 +55,19 @@ class TrieTest extends TestCase
     }
 
 
+    public function testGetWordsByPrefix()
+    {
+        $trie = new Trie();
+        $trie->addWord('catnip');
+        $trie->addword('dogma');
+        $trie->addWord('cat');
+        $trie->addWord('dog');
+
+        $this->assertSame(['cat', 'catnip', 'dog', 'dogma'], $trie->getWordsByPrefix());
+        $this->assertSame(['cat', 'catnip'], $trie->getWordsByPrefix('cat'));
+    }
+
+
+
 
 }

@@ -13,6 +13,7 @@ class Trie implements Lexicon
     public function __construct()
     {
         $this->root = new stdClass;
+        $this->reset();
     }
 
 
@@ -61,6 +62,25 @@ class Trie implements Lexicon
     {
         $node = $this->getNode($word);
         return isset($node->isFinal);
+    }
+
+
+    public function getWordsByPrefix(string $prefix = null) : array
+    {
+        $node = $this->getNode((string)$prefix);
+
+        $words = [];
+
+        if (isset($node->isFinal)) {
+            $words[] = $prefix;
+        }
+
+        foreach((array)$node as $letter => $nextNode) {
+            $newPrefix = $prefix . $letter;
+            $words = array_merge($words, $this->getWordsByPrefix($newPrefix));
+        }
+
+        return $words;
     }
 
 
