@@ -6,6 +6,7 @@ use stdClass;
 
 trait TrieSearch
 {
+    abstract function getNode(string $prefix);
 
     /**
      * Find all words that consist of given rack of letters
