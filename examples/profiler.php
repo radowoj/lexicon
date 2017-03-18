@@ -9,40 +9,61 @@ use Radowoj\Lexicon\TrieArray;
 use Radowoj\Lexicon\Dawg;
 use Radowoj\Lexicon\Lexicon;
 
+function profile(Closure $closure) {
+    $startMem = memory_get_usage();
+    $startTime = microtime(true);
+
+    $closure();
+
+    return [
+        'memory' => memory_get_usage() - $startMem,
+        'time' => round(microtime(true) - $startTime, 5),
+    ];
+}
+
+
 function profileLexicon(Lexicon $lexicon, array $words) : string
 {
-    //lexicon build start
-    $startMem = memory_get_usage();
-    $startBuildTime = microtime(true);
+    $buildStats = profile(function() use ($lexicon, $words) {
+        foreach($words as $word) {
+            $lexicon->addWord(trim($word));
+        }
+    });
 
-    foreach($words as $word) {
-        $lexicon->addWord(trim($word));
-    }
+    $checkStats = profile(function() use ($lexicon) {
+        for($i=0; $i<10000; $i++) {
+            $lexicon->isWord('abakan');
+        }
+    });
 
-    //lexicon build finish
-    $mem = memory_get_usage() - $startMem;
-    $time = round(microtime(true) - $startBuildTime, 2);
+    $searchStats = profile(function() use($lexicon) {
+        for($i=0; $i<10000; $i++) {
+            $lexicon->getWordsByRack('abakan');
+        }
+    });
 
-    //searches test start
-    $startSearchTime = microtime(true);
-    for($i=0; $i<100000; $i++) {
-        $lexicon->isWord('abakan');
-    }
-    //searches test finish
-    $searchTime = round(microtime(true) - $startSearchTime, 2);
+    $prefixSearchStats = profile(function() use($lexicon) {
+        for($i=0; $i<10000; $i++) {
+            $lexicon->getWordsByPrefix('abaż');
+        }
+    });
 
     $class = get_class($lexicon);
-    return "Class: {$class}; Memory: {$mem}; Build time: {$time}; 100k searches time: {$searchTime}";
-
+    return "Class: {$class};\n"
+        . "\tMemory: {$buildStats['memory']};\n"
+        . "\tBuild time: {$buildStats['time']};\n"
+        . "\t10k checks time: {$checkStats['time']}\n"
+        . "\t10k searches time: {$searchStats['time']}\n"
+        . "\t10k prefix searches time: {$prefixSearchStats['time']}\n";
 }
 
 $words = file('wordlist.txt');
-
-$objectsToProfile = [
+$lexicons = [
     new Trie(),
     new TrieArray()
 ];
 
-foreach($objectsToProfile as $object) {
-    echo profileLexicon($object, $words) . "\n";
+
+foreach($lexicons as $lexicon) {
+    echo profileLexicon($lexicon, $words) . "\n";
 }

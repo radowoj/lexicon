@@ -9,4 +9,6 @@ interface Lexicon
     public function isWord(string $word) : bool;
 
     public function getWordsByPrefix(string $prefix = null) : array;
+
+    public function getWordsByRack(string $rack, string $mask = null) : array;
 }

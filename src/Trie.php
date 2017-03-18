@@ -6,6 +6,8 @@ use stdClass;
 
 class Trie implements Lexicon
 {
+    use TrieSearch;
+
     protected $root;
 
     protected $currentNode;
@@ -82,10 +84,6 @@ class Trie implements Lexicon
 
         return $words;
     }
-
-
-
-
 
 
 

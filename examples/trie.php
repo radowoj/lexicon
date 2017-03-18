@@ -10,16 +10,26 @@ $trie = new Trie();
 
 $trie->addWord('kotek');
 $trie->addWord('kołek');
-$trie->addWord('kot');
 $trie->addWord('kotowaty');
+$trie->addWord('to');
+$trie->addWord('tok');
+$trie->addWord('ok');
+$trie->addWord('oko');
 
-$wordsToSearch = ['kot', 'kołczan'];
+$wordsToSearch = ['kot', 'kołczan', 'kołek'];
 
+//check if words exist in dictionary
 foreach($wordsToSearch as $word) {
     echo "{$word} is " . ($trie->isWord($word) ? "a valid word" : "an invalid word") . "\n";
 }
 
 var_dump(
+    //all words added to dictionary
     $trie->getWordsByPrefix(),
-    $trie->getWordsByPrefix('kot')
+
+    //words starting with prefix
+    $trie->getWordsByPrefix('kot'),
+
+    //words consisting of letters
+    $trie->getWordsByRack('koot')
 );

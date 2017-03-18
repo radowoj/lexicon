@@ -4,10 +4,12 @@ namespace Radowoj\Lexicon;
 
 /**
  * Trie implementation using internal array instead of stdClass for storing nodes.
- * Seems slightly slower but also more memory efficient.
+ * Slower but a bit more memory efficient
  */
 class TrieArray implements Lexicon
 {
+    use TrieSearch;
+
     const FINAL_KEY = 'isFinal';
 
     protected $nodes = [];
@@ -77,5 +79,4 @@ class TrieArray implements Lexicon
 
         return $words;
     }
-
 }
