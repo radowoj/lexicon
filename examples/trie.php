@@ -30,6 +30,6 @@ var_dump(
     //words starting with prefix
     $trie->getWordsByPrefix('kot'),
 
-    //words consisting of letters
+    //words consisting of given letters
     $trie->getWordsByRack('koot')
 );
