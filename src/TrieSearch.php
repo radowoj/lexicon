@@ -23,15 +23,15 @@ trait TrieSearch
 
     protected function searchWords(array $rack, string $prefix = null) : array
     {
-        $node = $this->getNode((string)$prefix);
+        $node = (array)$this->getNode((string)$prefix);
 
         $words = [];
 
-        if (isset($node->isFinal)) {
+        if (isset($node[self::FINAL_KEY])) {
             $words[] = $prefix;
         }
 
-        foreach((array)$node as $letter => $nextNode) {
+        foreach($node as $letter => $nextNode) {
             $key = array_search($letter, $rack, true);
             if ($key !== false) {
                 unset($rack[$key]);

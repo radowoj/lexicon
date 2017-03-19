@@ -8,6 +8,8 @@ class Trie implements Lexicon
 {
     use TrieSearch;
 
+    const FINAL_KEY = 'isFinal';
+
     protected $root;
 
     protected $currentNode;
@@ -39,7 +41,7 @@ class Trie implements Lexicon
             $this->currentNode = &$this->currentNode->{$letter};
         }
 
-        $this->currentNode->isFinal = true;
+        $this->currentNode->{self::FINAL_KEY} = true;
     }
 
 
@@ -63,7 +65,7 @@ class Trie implements Lexicon
     public function isWord(string $word) : bool
     {
         $node = $this->getNode($word);
-        return isset($node->isFinal);
+        return isset($node->{self::FINAL_KEY});
     }
 
 
@@ -73,7 +75,7 @@ class Trie implements Lexicon
 
         $words = [];
 
-        if (isset($node->isFinal)) {
+        if (isset($node->{self::FINAL_KEY})) {
             $words[] = $prefix;
         }
 
